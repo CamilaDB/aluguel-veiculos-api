@@ -47,7 +47,7 @@ public class VeiculoController {
             return ResponseEntity.badRequest().body("Não foi possível alterar veículo.");
         } else {
             veiculoService.inserirAlterarVeiculo(veiculo);
-            return ResponseEntity.status(201).body("Veiculo alterado com sucesso!");
+            return ResponseEntity.status(200).body("Veiculo alterado com sucesso!");
         }
     }
 
