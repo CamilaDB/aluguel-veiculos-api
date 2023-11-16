@@ -6,7 +6,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
@@ -47,13 +46,11 @@ public class VeiculoControllerTestes {
 
         String veiculoJson = new Gson().toJson(veiculo);
 
-        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.post("/veiculos")
+        mockMvc.perform(MockMvcRequestBuilders.post("/veiculos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(veiculoJson))
-                .andExpect(MockMvcResultMatchers.status().isCreated()).andReturn();
-
-        String textoResposta = resultado.getResponse().getContentAsString();
-        assert ("Veiculo inserido com sucesso!".equals(textoResposta));
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andExpect(MockMvcResultMatchers.jsonPath("message").value("Veiculo inserido com sucesso!"));
     }
 
     @Test
@@ -63,13 +60,11 @@ public class VeiculoControllerTestes {
 
         String veiculoJson = new Gson().toJson(veiculo);
 
-        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.post("/veiculos")
+        mockMvc.perform(MockMvcRequestBuilders.post("/veiculos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(veiculoJson))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
-
-        String textoResposta = resultado.getResponse().getContentAsString();
-        assert ("Não foi possível inserir veículo.".equals(textoResposta));
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("message").value("Não foi possível inserir veículo."));
     }
 
     @Test
@@ -84,13 +79,11 @@ public class VeiculoControllerTestes {
         veiculo.setReservado(true);
         String veiculoJson = new Gson().toJson(veiculo);
 
-        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.put("/veiculos")
+        mockMvc.perform(MockMvcRequestBuilders.put("/veiculos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(veiculoJson))
-                .andExpect(MockMvcResultMatchers.status().isOk()).andReturn();
-
-        String textoResposta = resultado.getResponse().getContentAsString();
-        assert ("Veiculo alterado com sucesso!".equals(textoResposta));
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("message").value("Veiculo alterado com sucesso!"));
     }
 
     @Test
@@ -104,13 +97,11 @@ public class VeiculoControllerTestes {
         veiculo.setReservado(false);
         String veiculoJson = new Gson().toJson(veiculo);
 
-        MvcResult resultado = mockMvc.perform(MockMvcRequestBuilders.put("/veiculos")
+        mockMvc.perform(MockMvcRequestBuilders.put("/veiculos")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(veiculoJson))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn();
-
-        String textoResposta = resultado.getResponse().getContentAsString();
-        assert ("Não foi possível alterar veículo.".equals(textoResposta));
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("message").value("Não foi possível alterar veículo."));
     }
 
     @Test

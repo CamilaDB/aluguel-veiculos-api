@@ -1,6 +1,8 @@
 package br.com.aluguelveiculos.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -32,22 +34,32 @@ public class VeiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<String> criarVeiculo(@RequestBody VeiculoEntity veiculo) {
+    public ResponseEntity<Map<String, String>> criarVeiculo(@RequestBody VeiculoEntity veiculo) {
+        Map<String, String> response = new HashMap<>();
         if (veiculo.getId() != null) {
-            return ResponseEntity.badRequest().body("Não foi possível inserir veículo.");
+            response.put("status", "error");
+            response.put("message", "Não foi possível inserir veículo.");
+            return ResponseEntity.badRequest().body(response);
         } else {
             veiculoService.inserirAlterarVeiculo(veiculo);
-            return ResponseEntity.status(201).body("Veiculo inserido com sucesso!");
+            response.put("status", "success");
+            response.put("message", "Veiculo inserido com sucesso!");
+            return ResponseEntity.status(201).body(response);
         }
     }
 
     @PutMapping
-    public ResponseEntity<String> atualizarVeiculo(@RequestBody VeiculoEntity veiculo) {
+    public ResponseEntity<Map<String, String>> atualizarVeiculo(@RequestBody VeiculoEntity veiculo) {
+        Map<String, String> response = new HashMap<>();
         if (veiculo.getId() == null) {
-            return ResponseEntity.badRequest().body("Não foi possível alterar veículo.");
+            response.put("status", "error");
+            response.put("message", "Não foi possível alterar veículo.");
+            return ResponseEntity.badRequest().body(response);
         } else {
             veiculoService.inserirAlterarVeiculo(veiculo);
-            return ResponseEntity.status(200).body("Veiculo alterado com sucesso!");
+            response.put("status", "success");
+            response.put("message", "Veiculo alterado com sucesso!");
+            return ResponseEntity.status(200).body(response);
         }
     }
 
